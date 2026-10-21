@@ -1,0 +1,17 @@
+{
+  "name": "blinders",
+  "version": "1.0.0",
+  "description": "Blinders: privacy-first smart-glasses shelf check. ERP mockup and label printing.",
+  "scripts": {
+    "erp": "node erp/server.mjs",
+    "seed": "node erp/seed.mjs --force",
+    "test": "node --test test/unit/*.test.mjs"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "bwip-js": "^4.11.4"
+  },
+  "private": true,
+  "type": "module"
+}

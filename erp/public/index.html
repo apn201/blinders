@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blinders WMS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="mark"></span>BLINDERS<span class="slash">//</span>WMS</div>
+    <form id="cmd" class="cmd" autocomplete="off">
+      <span class="cmd-prefix">/n</span>
+      <input id="cmd-input" placeholder="Transaction, e.g. MIGO" spellcheck="false" aria-label="Transaction code">
+    </form>
+    <div class="env">
+      <span class="chip warn" title="All data in this system is fictional demo data">DEMO DATA · FICTIONAL</span>
+      <span class="meta"><span id="clock"></span> · WH01 Garage · <span id="user">JLILJA</span></span>
+    </div>
+  </header>
+
+  <nav class="sidenav" id="nav"></nav>
+
+  <main id="view" class="view"></main>
+
+  <dialog id="drawer" class="drawer"><div id="drawer-body"></div></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="print-sheet" class="print-sheet" aria-hidden="true"></div>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
