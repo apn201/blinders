@@ -9,6 +9,7 @@
  * R7 count per material, shown once on the shelf label.
  */
 import { ErpBin, ErpBox, ErpExport } from "./BlindersErpData"
+import { AuditEvent } from "./BlindersAuditLog"
 
 export enum Severity {
   Info = 0,
@@ -33,7 +34,7 @@ export interface ShelfEvaluation {
   warnings: number
   shelfCallout: CalloutSpec | null
   boxCallouts: CalloutSpec[]
-  logLines: string[]
+  logLines: AuditEvent[]
 }
 
 const MAX_LINES = 3
@@ -59,6 +60,8 @@ function clampLines(lines: string[]): string {
 }
 
 interface BoxProblem {
+  /** SPEC rule id, e.g. R1. */
+  rule: string
   text: string
   severity: Severity
 }
@@ -67,18 +70,18 @@ interface BoxProblem {
 function boxProblems(box: ErpBox, binId: string, today: string): BoxProblem[] {
   const out: BoxProblem[] = []
   if (box.bin !== binId) {
-    out.push({ text: "belongs in " + box.bin, severity: Severity.Red })
+    out.push({ rule: "R1", text: "belongs in " + box.bin, severity: Severity.Red })
   }
   if (box.bestBefore) {
     const days = dayNumber(box.bestBefore) - dayNumber(today)
     if (days < 0) {
-      out.push({ text: "expired " + shortDate(box.bestBefore), severity: Severity.Red })
+      out.push({ rule: "R6", text: "expired " + shortDate(box.bestBefore), severity: Severity.Red })
     } else if (days <= EXPIRY_WARN_DAYS) {
-      out.push({ text: "expires " + shortDate(box.bestBefore), severity: Severity.Amber })
+      out.push({ rule: "R6", text: "expires " + shortDate(box.bestBefore), severity: Severity.Amber })
     }
   }
   if (box.action) {
-    out.push({ text: box.action, severity: Severity.Amber })
+    out.push({ rule: "R2", text: box.action, severity: Severity.Amber })
   }
   return out
 }
@@ -94,17 +97,17 @@ export function evaluateShelf(
   boxCodes: string[],
   mode: number,
 ): ShelfEvaluation {
-  const log: string[] = []
+  const log: AuditEvent[] = []
   const shelfId = erp.warehouse + " Shelf " + binId
   const bin: ErpBin | null = erp.bins.filter((b) => b.code === binCode)[0] || null
-  log.push("read " + binCode + " -> ERP query (local copy)")
+  log.push({ event: "SHELF_READ", fields: { label: binCode, erp: "local_copy" }, msg: "read " + binCode + " -> ERP query (local copy)" })
 
   const boxCallouts: CalloutSpec[] = []
   let warnings = 0
 
   if (!bin) {
-    log.push("ERP reply: " + binId + " not in ERP")
-    log.push(binId + ' -> "?" not in ERP')
+    log.push({ event: "ERP_REPLY", fields: { bin: binId, result: "not_in_erp" }, msg: "ERP reply: " + binId + " not in ERP" })
+    log.push({ event: "CHECK_UNKNOWN", fields: { bin: binId, rule: "R3" }, msg: binId + ' -> "?" not in ERP' })
     return {
       binId,
       binCode,
@@ -117,7 +120,11 @@ export function evaluateShelf(
   }
 
   const expectText = bin.expected.map((e) => e.boxes + "x " + e.material).join(", ")
-  log.push("ERP reply: " + binId + " expects " + (expectText.length > 0 ? expectText : "nothing"))
+  log.push({
+    event: "ERP_REPLY",
+    fields: { bin: binId, expects: expectText.length > 0 ? expectText : "nothing" },
+    msg: "ERP reply: " + binId + " expects " + (expectText.length > 0 ? expectText : "nothing"),
+  })
 
   // --- Empty shelf -------------------------------------------------------
   if (boxCodes.length === 0 && bin.expected.length > 0) {
@@ -125,7 +132,7 @@ export function evaluateShelf(
       .map((e) => e.boxes + " box" + (e.boxes === 1 ? "" : "es") + " of " + e.material + " (" + e.short + ")")
       .join(", ")
     const text = shelfId + " - Seems empty. Should have " + should
-    log.push(binId + ' seen 0 boxes -> warning "Seems empty"')
+    log.push({ event: "SHELF_RESULT", fields: { bin: binId, boxes_seen: 0, warnings: 1, result: "empty" }, msg: binId + ' seen 0 boxes -> warning "Seems empty"' })
     return {
       binId,
       binCode,
@@ -138,13 +145,13 @@ export function evaluateShelf(
   }
 
   // --- Boxes ---------------------------------------------------------------
-  const perBoxLog: string[] = []
+  const perBoxLog: AuditEvent[] = []
   const seenPerMaterial: { [material: string]: number } = {}
   for (const code of boxCodes) {
     const box: ErpBox | null = erp.boxes.filter((b) => b.code === code)[0] || null
     if (!box) {
       warnings++
-      perBoxLog.push(code + ' -> "?" not in ERP')
+      perBoxLog.push({ event: "CHECK_UNKNOWN", fields: { label: code, rule: "R3" }, msg: code + ' -> "?" not in ERP' })
       const text = mode === 2 ? clampLines(["? Box " + code, "not in ERP"]) : "? " + code + " - not in ERP"
       boxCallouts.push({ labelCode: code, text, severity: Severity.Grey, greenDot: false })
       continue
@@ -154,7 +161,11 @@ export function evaluateShelf(
     const title = box.material + " " + box.short
     if (problems.length > 0) {
       warnings++
-      perBoxLog.push(code + ' -> warning "' + problems[0].text + '"')
+      perBoxLog.push({
+        event: "CHECK_WARNING",
+        fields: { label: code, bin: binId, rule: problems[0].rule, warning: problems[0].text },
+        msg: code + ' -> warning "' + problems[0].text + '"',
+      })
       const text =
         mode === 2
           ? clampLines([title, problems[0].text, problems.length > 1 ? problems[1].text : box.status])
@@ -178,13 +189,16 @@ export function evaluateShelf(
   }
   for (const c of countProblems) {
     warnings++
-    perBoxLog.push(binId + ' -> warning "' + c + '"')
+    perBoxLog.push({ event: "CHECK_WARNING", fields: { bin: binId, rule: "R7", warning: c }, msg: binId + ' -> warning "' + c + '"' })
   }
 
-  log.push(
-    binId + " seen " + boxCodes.length + " box" + (boxCodes.length === 1 ? "" : "es") + " -> " +
+  log.push({
+    event: "SHELF_RESULT",
+    fields: { bin: binId, boxes_seen: boxCodes.length, warnings, result: warnings === 0 ? "match" : "mismatch" },
+    msg:
+      binId + " seen " + boxCodes.length + " box" + (boxCodes.length === 1 ? "" : "es") + " -> " +
       (warnings === 0 ? "all match ERP" : warnings + " warning" + (warnings === 1 ? "" : "s")),
-  )
+  })
   for (const l of perBoxLog) log.push(l)
 
   let shelfCallout: CalloutSpec | null = null

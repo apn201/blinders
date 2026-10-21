@@ -118,12 +118,16 @@ export class BlindersMain extends BaseScriptComponent {
   menuLookAwaySec: number = 3
 
   @input
+  @hint("Device id written on every audit-log line")
+  deviceId: string = "SPECS-DEMO-01"
+
+  @input
   @hint("Cue volume (mode select, camera pause)")
   @widget(new SliderWidget(0, 1, 0.05))
   sfxVolume: number = 0.6
   @ui.group_end
 
-  private log = new BlindersAuditLog()
+  private log: BlindersAuditLog = new BlindersAuditLog()
   private audio: BlindersAudio | null = null
   private shelves: ShelfInfo[] = []
   private mode = -1
@@ -164,6 +168,12 @@ export class BlindersMain extends BaseScriptComponent {
       print("[BlindersMain] ERROR: required @input not wired (camera, racks, person, callouts, pausePill, modeMenu)")
       return
     }
+    this.log = new BlindersAuditLog(this.deviceId)
+    this.log.write({
+      event: "SESSION_START",
+      fields: { network: "none", storage: "none", formats: "BIN,SSCC-952", recheck_s: this.recheckIntervalSec },
+      msg: "session start -> no network module, nothing stored, only shelf and box labels read",
+    })
     this.shelves = this.rackA.getShelves().concat(this.rackB.getShelves())
     this.callouts.setViewer(this.cameraObject)
     this.audio = new BlindersAudio(this.sceneObject, this.sfxVolume)
@@ -195,9 +205,9 @@ export class BlindersMain extends BaseScriptComponent {
         this.paused = false
         this.pausePill.hide()
       }
-      this.log.write("mode 0 selected -> camera OFF, no reads")
+      this.log.write({ event: "MODE_SET", fields: { mode: 0, camera: "off" }, msg: "mode 0 selected -> camera OFF, no reads" })
     } else {
-      this.log.write("mode " + mode + " selected -> camera ON")
+      this.log.write({ event: "MODE_SET", fields: { mode, camera: "on" }, msg: "mode " + mode + " selected -> camera ON" })
     }
     this.modeMenu.setCurrentMode(mode)
     if (this.audio) this.audio.playModeSelect()
@@ -439,7 +449,11 @@ export class BlindersMain extends BaseScriptComponent {
     this.active = {}
     this.pausePill.show()
     this.recheckTimer = this.recheckIntervalSec
-    this.log.write("person detected -> camera PAUSED, " + this.readsWhilePaused + " frames sent")
+    this.log.write({
+      event: "CAMERA_PAUSED",
+      fields: { reason: "person_detected", frames_sent: this.readsWhilePaused },
+      msg: "person detected -> camera PAUSED, " + this.readsWhilePaused + " frames sent",
+    })
     if (this.audio) this.audio.playCameraPause()
   }
 
@@ -447,10 +461,10 @@ export class BlindersMain extends BaseScriptComponent {
   private recheck(camPos: vec3, viewDir: vec3): void {
     this.recheckCount++
     if (this.personInView(camPos, viewDir)) {
-      this.log.write("recheck: 1 frame -> person still present, stay paused")
+      this.log.write({ event: "RECHECK", fields: { frames: 1, result: "person_present", camera: "paused" }, msg: "recheck: 1 frame -> person still present, stay paused" })
       this.recheckTimer = this.recheckIntervalSec
     } else {
-      this.log.write("recheck: 1 frame -> clear, camera RESUMED")
+      this.log.write({ event: "RECHECK", fields: { frames: 1, result: "clear", camera: "resumed" }, msg: "recheck: 1 frame -> clear, camera RESUMED" })
       this.paused = false
       this.pausePill.hide()
     }

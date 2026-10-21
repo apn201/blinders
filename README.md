@@ -14,6 +14,8 @@ The Lens is in [blinders1/](blinders1/), built for SPECS in Lens Studio 5.24.
 
 Tests: open the LEAF plugin panel in Lens Studio and run the five scenarios in `blinders1/Assets/Tests/`, one per done criterion in the design brief.
 
+Audit log: copy the Logger panel into `logger.txt` at the repo root, then run `npm run audit`. It keeps only the Blinders audit lines in `audit/audit.log` and writes `audit/audit-summary.txt`: frames read while a person was in view, codes outside the allow-list, sequence gaps, pauses and rechecks, all counted from the log.
+
 Design brief, submission text and video script: [blinders1/devpost/](blinders1/devpost/).
 
 ## What is fake

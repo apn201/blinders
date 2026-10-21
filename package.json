@@ -5,6 +5,7 @@
   "scripts": {
     "erp": "node erp/server.mjs",
     "seed": "node erp/seed.mjs --force",
+    "audit": "node scripts/audit-extract.mjs",
     "test": "node --test test/unit/*.test.mjs"
   },
   "author": "",

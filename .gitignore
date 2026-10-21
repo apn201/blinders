@@ -1,2 +1,5 @@
 node_modules/
 data/*.tmp
+# Local Logger paste and npm run audit output
+logger.txt
+audit/
