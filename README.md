@@ -4,6 +4,18 @@ Smart glasses for the warehouse floor that are allowed to see one thing: labels.
 
 Entry for [Learn AR with SPECS](https://learn-specs.devpost.com/). Spec: [docs/SPEC.md](docs/SPEC.md). Build plan: [blinders-plan.md](blinders-plan.md).
 
+## Lens project
+
+The Lens is in [blinders1/](blinders1/), built for SPECS in Lens Studio 5.24.
+
+1. Open `blinders1/blinders1.esproj` in Lens Studio 5.24.
+2. Press play in the Preview panel. The Lens starts in mode 1. Look down for 2 s to open the mode menu. The stand-in person walks in after about 12 s.
+3. The audit log prints to the Logger panel.
+
+Tests: open the LEAF plugin panel in Lens Studio and run the five scenarios in `blinders1/Assets/Tests/`, one per done criterion in the design brief.
+
+Design brief, submission text and video script: [blinders1/devpost/](blinders1/devpost/).
+
 ## What is fake
 
 All ERP data is fictional demo data. Companies are fictional (Stark Industries, Wayne Enterprises, Acme...). All GTINs and SSCCs use GS1 prefix 952, which GS1 reserves for demonstrations, so the codes are valid but belong to nobody.
