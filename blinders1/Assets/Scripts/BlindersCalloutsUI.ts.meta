@@ -1,0 +1,93 @@
+- !<AssetImportMetadata/16a4f400-1030-4d7f-b603-3b1a609c6a06>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> db75f094-4dbd-4a1a-b77a-6a2f2fea3c52
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> db75f094-4dbd-4a1a-b77a-6a2f2fea3c52
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 15158df6-700a-427e-83dc-3bd8d3001d12
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/15158df6-700a-427e-83dc-3bd8d3001d12>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  VersionPrerelease: ""
+  UpdateOrder: 0
+  ComponentUid: 40a4a2c9-63dd-417f-84b6-be94a837936b
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    amberColor: false
+    boxTextSize: false
+    boxWrapWidthCm: false
+    contrastOpacity: false
+    contrastStyle: false
+    fadeDurationSec: false
+    greyColor: false
+    infoColor: false
+    liftCm: false
+    lineMaterial: false
+    okDotColor: false
+    redColor: false
+    shelfWrapWidthCm: false
+    standOffCm: false
+    textSize: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - textSize: !<float> 90.000000
+      boxTextSize: !<float> 115.000000
+      shelfWrapWidthCm: !<float> 55.000000
+      boxWrapWidthCm: !<float> 32.000000
+      standOffCm: !<float> 4.000000
+      liftCm: 2.500000
+      fadeDurationSec: 0.800000
+      contrastStyle: !<float> 1.000000
+      contrastOpacity: 0.750000
+      lineMaterial: !<reference.Material> 00000000-0000-0000-0000-000000000000
+      redColor: !<Vec4> {x: 1.000000, y: 0.480000, z: 0.450000, w: 1.000000}
+      amberColor: !<Vec4> {x: 1.000000, y: 0.800000, z: 0.320000, w: 1.000000}
+      greyColor: !<Vec4> {x: 0.800000, y: 0.800000, z: 0.820000, w: 1.000000}
+      infoColor: !<Vec4> {x: 0.950000, y: 0.970000, z: 1.000000, w: 1.000000}
+      okDotColor: !<Vec4> {x: 0.400000, y: 1.000000, z: 0.550000, w: 1.000000}
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">BlindersCalloutsUI – label callouts</span>"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">Settings</span>"}'
+    - '// @ui {"widget":"group_start", "label":"Settings"}'
+    - '// @input float textSize = 140 {"hint":"Shelf-label callout text size (Text.size). 140 gives capitals about 1.9 cm tall", "widget":"slider", "min":60, "max":300, "step":5}'
+    - '// @input float boxTextSize = 115 {"hint":"Box-label callout text size (Text.size). 115 gives capitals about 1.6 cm tall", "widget":"slider", "min":60, "max":300, "step":5}'
+    - '// @input float shelfWrapWidthCm = 72 {"hint":"Wrap width of shelf-label callouts in cm (3 lines max)", "widget":"slider", "min":15, "max":100, "step":1}'
+    - '// @input float boxWrapWidthCm = 34 {"hint":"Wrap width of box-label callouts in cm (keeps neighbours apart)", "widget":"slider", "min":15, "max":60, "step":1}'
+    - '// @input float standOffCm = 1.5 {"hint":"How far in front of the label the callout floats (cm)", "widget":"slider", "min":0, "max":15, "step":0.5}'
+    - '// @input float liftCm = 2.5 {"hint":"Gap between the top of the label and the bottom of the callout (cm)", "widget":"slider", "min":0, "max":10, "step":0.5}'
+    - '// @input float fadeDurationSec = 0.8 {"hint":"Fade-out duration once a shelf is no longer looked at (s)", "widget":"slider", "min":0.1, "max":3, "step":0.1}'
+    - '// @input float contrastStyle = 2 {"hint":"Contrast aid. Dark renders transparent on the glasses, so this only helps the preview and video", "widget":"combobox", "values":[{"label":"None", "value":0}, {"label":"Halo (outline + shadow)", "value":1}, {"label":"Backing (dark plate)", "value":2}]}'
+    - '// @input float contrastOpacity = 0.7 {"hint":"Opacity of the dark halo / backing", "widget":"slider", "min":0, "max":1, "step":0.05}'
+    - '// @input Asset.Material lineMaterial {"hint":"Unlit material for the leader line from label to callout (cloned per callout)"}'
+    - '// @input vec4 redColor = "{1,0.48,0.45,1}" {"hint":"Red: wrong shelf, expired, empty", "widget":"color"}'
+    - '// @input vec4 amberColor = "{1,0.8,0.32,1}" {"hint":"Amber: expiring soon, ERP action, count mismatch", "widget":"color"}'
+    - '// @input vec4 greyColor = "{0.8,0.8,0.82,1}" {"hint":"Grey: unknown code ?", "widget":"color"}'
+    - '// @input vec4 infoColor = "{0.95,0.97,1,1}" {"hint":"Info text (mode 2 details)", "widget":"color"}'
+    - '// @input vec4 okDotColor = "{0.4,1,0.55,1}" {"hint":"Green dot for labels that match the ERP", "widget":"color"}'
+    - '// @ui {"widget":"group_end"}'

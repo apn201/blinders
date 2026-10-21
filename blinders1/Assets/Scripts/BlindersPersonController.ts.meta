@@ -1,0 +1,79 @@
+- !<AssetImportMetadata/6776df1d-4a5f-4216-9671-01d56dff672b>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> bfdeba83-1f2c-456c-8856-da92206c883b
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> bfdeba83-1f2c-456c-8856-da92206c883b
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> ff292fb4-4f6a-46e5-9329-62e0c192c410
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/ff292fb4-4f6a-46e5-9329-62e0c192c410>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  VersionPrerelease: ""
+  UpdateOrder: 0
+  ComponentUid: 1baf5708-74f1-4924-8022-0f5966f54fef
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    boxMesh: false
+    litMaterial: false
+    loopSec: false
+    pathHalfLengthCm: false
+    sphereMesh: false
+    standSec: false
+    startDelaySec: false
+    walkEnabled: false
+    walkSec: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - boxMesh: !<reference.RenderMesh> 00000000-0000-0000-0000-000000000000
+      sphereMesh: !<reference.RenderMesh> 00000000-0000-0000-0000-000000000000
+      litMaterial: !<reference.Material> 00000000-0000-0000-0000-000000000000
+      walkEnabled: true
+      startDelaySec: !<float> 8.000000
+      loopSec: !<float> 20.000000
+      standSec: !<float> 8.000000
+      walkSec: !<float> 4.000000
+      pathHalfLengthCm: !<float> 260.000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">BlindersPersonController – stand-in person loop</span>"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">References</span>"}'
+    - '// @ui {"widget":"group_start", "label":"References"}'
+    - '// @input Asset.RenderMesh boxMesh {"hint":"Cube mesh for torso, limbs (normalised at runtime)"}'
+    - '// @input Asset.RenderMesh sphereMesh {"hint":"Sphere mesh for the head (normalised at runtime)"}'
+    - '// @input Asset.Material litMaterial {"hint":"Lit material cloned and tinted for the figure"}'
+    - '// @ui {"widget":"group_end"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">Settings</span>"}'
+    - '// @ui {"widget":"group_start", "label":"Settings"}'
+    - '// @input bool walkEnabled = true {"hint":"Turn the walking person on/off"}'
+    - '// @input float startDelaySec = 12 {"hint":"Seconds after Lens start before the first walk-in", "widget":"slider", "min":0, "max":30, "step":0.5}'
+    - '// @input float loopSec = 36 {"hint":"Full loop length (walk in + stand + walk out + off-stage), seconds. 36 = about 20 s off stage between visits", "widget":"slider", "min":10, "max":60, "step":1}'
+    - '// @input float standSec = 8 {"hint":"Seconds standing in front of the racks", "widget":"slider", "min":2, "max":20, "step":0.5}'
+    - '// @input float walkSec = 4 {"hint":"Seconds to walk in (and out)", "widget":"slider", "min":1, "max":8, "step":0.5}'
+    - '// @input float pathHalfLengthCm = 260 {"hint":"Start / end of the path, cm left and right of the centre (local X)", "widget":"slider", "min":100, "max":500, "step":10}'
+    - '// @ui {"widget":"group_end"}'

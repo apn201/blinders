@@ -1,0 +1,70 @@
+- !<AssetImportMetadata/60084e86-c827-4ce2-9b2c-5e96502a9909>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 36e8d60d-d265-4660-8f14-252183863360
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 36e8d60d-d265-4660-8f14-252183863360
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 1b0ab980-72da-4d62-a0a6-d7d9415d6e18
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/1b0ab980-72da-4d62-a0a6-d7d9415d6e18>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  VersionPrerelease: ""
+  UpdateOrder: 0
+  ComponentUid: 5345be11-10fc-4327-bd64-000f151045f6
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    belowEyeCm: false
+    cameraObject: false
+    distanceCm: false
+    followRate: false
+    pillText: false
+    textColor: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - cameraObject: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      pillText: PERSON DETECTED · CAMERA PAUSED
+      distanceCm: !<float> 100.000000
+      belowEyeCm: !<float> 22.000000
+      followRate: !<float> 3.000000
+      textColor: !<Vec4> {x: 0.850000, y: 0.870000, z: 0.900000, w: 1.000000}
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">BlindersPausePillUI – camera paused pill</span>"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">References</span>"}'
+    - '// @ui {"widget":"group_start", "label":"References"}'
+    - '// @input SceneObject cameraObject {"hint":"The world camera (head) the pill follows"}'
+    - '// @ui {"widget":"group_end"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">Settings</span>"}'
+    - '// @ui {"widget":"group_start", "label":"Settings"}'
+    - '// @input string pillText = "PERSON DETECTED · CAMERA PAUSED" {"hint":"Pill text"}'
+    - '// @input float distanceCm = 100 {"hint":"Distance ahead of the eyes (cm)", "widget":"slider", "min":50, "max":200, "step":5}'
+    - "// @input float belowEyeCm = 14 {\"hint\":\"How far below the centre of view (cm, at the pill's distance)\", \"widget\":\"slider\", \"min\":0, \"max\":50, \"step\":1}"
+    - '// @input float followRate = 3 {"hint":"Follow smoothing (higher = snappier)", "widget":"slider", "min":0.5, "max":10, "step":0.5}'
+    - '// @input vec4 textColor = "{0.85,0.87,0.9,1}" {"hint":"Text and icon colour (light grey)", "widget":"color"}'
+    - '// @ui {"widget":"group_end"}'
